@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#080f1c">
+<title>SchoolSafe AI — Source Code</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;background:#080f1c;color:#e5edf8;font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif}
+main{max-width:1050px;margin:0 auto;padding:22px 14px 42px}
+header{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-bottom:16px}
+h1{font-size:22px;margin:0;color:#f4f8ff}
+.sub{color:#8fa3bd;font-size:13px;margin-top:5px}
+button{border:1px solid #31506e;background:#12243a;color:#eaf5ff;border-radius:9px;padding:10px 14px;font-weight:650;font-size:14px}
+.frame{border:1px solid #263a53;border-radius:13px;overflow:hidden;background:#0c1625;box-shadow:0 14px 40px #0005}
+.top{height:38px;background:#111f32;border-bottom:1px solid #263a53;display:flex;align-items:center;padding:0 13px;gap:7px}
+.dot{width:9px;height:9px;border-radius:50%;background:#47617e}
+.label{margin-left:8px;color:#9db0c7;font-size:12px}
+pre{margin:0;padding:18px 16px;overflow:auto;white-space:pre;tab-size:2;font:12px/1.65 ui-monospace,SFMono-Regular,Consolas,monospace;color:#d8e6f7}
+.status{font-size:12px;color:#8fa3bd;margin-top:12px}
+@media(min-width:700px){pre{font-size:14px;padding:22px}}
+</style>
+</head>
+<body>
+<main>
+<header>
+ <div>
+  <h1>SchoolSafe AI — Source Code</h1>
+  <div class="sub">Complete project source · Read-only code view</div>
+ </div>
+ <button id="copyButton" type="button">Copy all code</button>
+</header>
+<section class="frame" aria-label="Complete source code">
+ <div class="top"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="label">SOURCE CODE</span></div>
+ <pre><code id="source">&lt;!doctype html&gt;
+&lt;html lang="en"&gt;
+&lt;head&gt;
+&lt;meta charset="utf-8"&gt;
+&lt;meta name="viewport" content="width=device-width, initial-scale=1"&gt;
+&lt;meta name="theme-color" content="#0b1220"&gt;
+&lt;title&gt;SchoolSafe AI | Face Recognition Demo&lt;/title&gt;
+&lt;style&gt;
+:root{--bg:#0b1220;--panel:#121d30;--panel2:#17253b;--text:#eef5ff;--muted:#9fb0c8;--blue:#38bdf8;--line:#263750;--green:#34d399;--red:#fb7185;--amber:#fbbf24}
+*{box-sizing:border-box}body{margin:0;background:linear-gradient(160deg,#0b1220,#101b2e 65%,#0b1220);color:var(--text);font:15px/1.5 system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif}
+main{width:min(920px,100%);margin:auto;padding:22px 15px 40px}
+header{text-align:center;padding:14px 0 20px}h1{margin:0;color:var(--blue);font-size:clamp(27px,6vw,39px);letter-spacing:.2px}header p{margin:7px auto 0;color:var(--muted);max-width:620px}
+.panel{background:rgba(18,29,48,.96);border:1px solid var(--line);border-radius:18px;padding:18px;margin:14px 0;box-shadow:0 12px 30px #0002}
+h2{font-size:19px;margin:0 0 5px} .hint{color:var(--muted);font-size:13px;margin:0 0 14px}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:12px}
+.person{background:var(--panel2);border:1px solid var(--line);border-radius:13px;padding:12px}
+.person label{display:block;font-weight:650;margin-bottom:7px}.person input[type=text]{width:100%;margin-bottom:8px}
+input[type=text]{background:#0c1728;border:1px solid #344963;border-radius:9px;color:var(--text);padding:10px;width:100%;font:inherit}
+input[type=file]{width:100%;font-size:12px;color:var(--muted)}
+button{border:0;border-radius:11px;padding:12px 16px;background:var(--blue);color:#062033;font-weight:750;font-size:15px;cursor:pointer}
+button:disabled{opacity:.45;cursor:not-allowed}.secondary{background:#263b57;color:var(--text)}.danger{background:#512536;color:#ffe5ea}
+.actions{display:flex;gap:9px;flex-wrap:wrap;margin-top:13px}
+#modelStatus{color:var(--amber);font-size:13px;margin-top:10px}
+.cameraWrap{background:#050a12;border:1px solid var(--line);border-radius:14px;overflow:hidden;min-height:190px;display:flex;align-items:center;justify-content:center}
+video{display:block;width:100%;max-height:460px;object-fit:cover;transform:scaleX(-1)}
+#cameraPlaceholder{color:var(--muted);padding:35px 16px;text-align:center}
+#result{margin-top:14px;border-radius:13px;padding:16px;background:#0c1728;border:1px solid var(--line);font-weight:750;font-size:20px;text-align:center}
+#result small{display:block;font-weight:400;font-size:13px;color:var(--muted);margin-top:5px}
+.result-match{color:var(--green)}.result-none{color:var(--red)}.result-warn{color:var(--amber)}
+.note{font-size:12px;color:var(--muted);margin:12px 0 0}
+footer{text-align:center;color:var(--muted);font-size:12px;padding:10px}
+@media(max-width:480px){main{padding:15px 11px 30px}.panel{padding:14px}.actions button{flex:1}}
+&lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;main&gt;
+&lt;header&gt;
+  &lt;h1&gt;SchoolSafe AI&lt;/h1&gt;
+  &lt;p&gt;Face Recognition System · Class XII AI Capstone Demonstration&lt;/p&gt;
+&lt;/header&gt;
+
+&lt;section class="panel"&gt;
+  &lt;h2&gt;1. Register reference photos&lt;/h2&gt;
+  &lt;p class="hint"&gt;Add up to five reference photos. Enter a label for each person. Use photos only with their permission.&lt;/p&gt;
+  &lt;div class="grid" id="people"&gt;
+    &lt;div class="person"&gt;&lt;label&gt;Reference 1&lt;/label&gt;&lt;input type="text" id="name0" placeholder="Student name / ID"&gt;&lt;input type="file" id="photo0" accept="image/*"&gt;&lt;/div&gt;
+    &lt;div class="person"&gt;&lt;label&gt;Reference 2&lt;/label&gt;&lt;input type="text" id="name1" placeholder="Student name / ID"&gt;&lt;input type="file" id="photo1" accept="image/*"&gt;&lt;/div&gt;
+    &lt;div class="person"&gt;&lt;label&gt;Reference 3&lt;/label&gt;&lt;input type="text" id="name2" placeholder="Student name / ID"&gt;&lt;input type="file" id="photo2" accept="image/*"&gt;&lt;/div&gt;
+    &lt;div class="person"&gt;&lt;label&gt;Reference 4&lt;/label&gt;&lt;input type="text" id="name3" placeholder="Student name / ID"&gt;&lt;input type="file" id="photo3" accept="image/*"&gt;&lt;/div&gt;
+    &lt;div class="person"&gt;&lt;label&gt;Reference 5&lt;/label&gt;&lt;input type="text" id="name4" placeholder="Student name / ID"&gt;&lt;input type="file" id="photo4" accept="image/*"&gt;&lt;/div&gt;
+  &lt;/div&gt;
+  &lt;div class="actions"&gt;&lt;button id="registerBtn" disabled&gt;Register selected photos&lt;/button&gt;&lt;button class="secondary" id="clearBtn"&gt;Clear references&lt;/button&gt;&lt;/div&gt;
+  &lt;div id="modelStatus"&gt;Loading face recognition models… Please keep this page open and connected to the internet.&lt;/div&gt;
+  &lt;p class="note"&gt;Reference photos are processed in this browser and are not uploaded by this website. They are cleared when you refresh or close this page.&lt;/p&gt;
+&lt;/section&gt;
+
+&lt;section class="panel"&gt;
+  &lt;h2&gt;2. Scan using the camera&lt;/h2&gt;
+  &lt;p class="hint"&gt;Allow camera permission when your browser asks. Use this only as a classroom demonstration.&lt;/p&gt;
+  &lt;div class="cameraWrap"&gt;
+    &lt;video id="video" autoplay muted playsinline hidden&gt;&lt;/video&gt;
+    &lt;div id="cameraPlaceholder"&gt;Camera preview will appear here.&lt;/div&gt;
+  &lt;/div&gt;
+  &lt;div class="actions"&gt;
+    &lt;button id="startBtn" class="secondary" disabled&gt;Start camera&lt;/button&gt;
+    &lt;button id="scanBtn" disabled&gt;Scan face&lt;/button&gt;
+    &lt;button id="stopBtn" class="danger" disabled&gt;Stop camera&lt;/button&gt;
+  &lt;/div&gt;
+  &lt;div id="result" aria-live="polite"&gt;READY — register at least one reference photo first.&lt;small&gt;The result is a possible match, not proof of identity or school membership.&lt;/small&gt;&lt;/div&gt;
+&lt;/section&gt;
+
+&lt;section class="panel"&gt;
+  &lt;h2&gt;Important note&lt;/h2&gt;
+  &lt;p class="hint" style="margin-bottom:0"&gt;A possible match only means the face looks similar to one of the reference photos. “Not verified” does not prove that someone is a stranger. Lighting, camera quality and image angle can affect results. Never use this demo to grant or deny entry, monitor people, or make disciplinary decisions. Confirm identity through normal school procedures.&lt;/p&gt;
+&lt;/section&gt;
+&lt;footer&gt;SchoolSafe AI · Educational prototype · No access-control functionality&lt;/footer&gt;
+&lt;/main&gt;
+
+&lt;script src="https://cdn.jsdelivr.net/npm/face-api.js@0.22.2/dist/face-api.min.js"&gt;&lt;/script&gt;
+&lt;script&gt;
+(() =&gt; {
+  const MODEL_URL = 'https://cdn.jsdelivr.net/gh/justadudewhohacks/face-api.js@master/weights';
+  const video = document.getElementById('video');
+  const placeholder = document.getElementById('cameraPlaceholder');
+  const statusEl = document.getElementById('modelStatus');
+  const resultEl = document.getElementById('result');
+  const registerBtn = document.getElementById('registerBtn');
+  const startBtn = document.getElementById('startBtn');
+  const scanBtn = document.getElementById('scanBtn');
+  const stopBtn = document.getElementById('stopBtn');
+  let modelsReady = false, stream = null, references = [], busy = false;
+
+  function setResult(main, detail, cls='') {
+    resultEl.className = cls;
+    resultEl.innerHTML = '';
+    const strong = document.createElement('span');
+    strong.textContent = main;
+    const small = document.createElement('small');
+    small.textContent = detail;
+    resultEl.append(strong, small);
+  }
+  function updateButtons() {
+    registerBtn.disabled = !modelsReady;
+    startBtn.disabled = !modelsReady;
+    scanBtn.disabled = !stream || references.length === 0 || busy;
+    stopBtn.disabled = !stream;
+  }
+
+  async function loadModels() {
+    try {
+      if (!window.faceapi) throw new Error('The face recognition library could not load. Check your internet connection and reload.');
+      await Promise.all([
+        faceapi.nets.tinyFaceDetector.loadFromUri(MODEL_URL),
+        faceapi.nets.faceLandmark68Net.loadFromUri(MODEL_URL),
+        faceapi.nets.faceRecognitionNet.loadFromUri(MODEL_URL)
+      ]);
+      modelsReady = true;
+      statusEl.textContent = 'Models loaded. You can now register photos and start the camera.';
+      statusEl.style.color = 'var(--green)';
+      updateButtons();
+    } catch (err) {
+      statusEl.textContent = 'Could not load models: ' + err.message + ' Please check internet and reload this page.';
+      statusEl.style.color = 'var(--red)';
+    }
+  }
+
+  async function descriptorFromImage(file) {
+    const url = URL.createObjectURL(file);
+    const img = new Image();
+    try {
+      await new Promise((resolve, reject) =&gt; {
+        img.onload = resolve;
+        img.onerror = () =&gt; reject(new Error('This image could not be opened.'));
+        img.src = url;
+      });
+      const detection = await faceapi.detectSingleFace(img, new faceapi.TinyFaceDetectorOptions({inputSize: 320, scoreThreshold: 0.35}))
+        .withFaceLandmarks().withFaceDescriptor();
+      if (!detection) throw new Error('No clear face found. Try a front-facing photo with good lighting.');
+      return detection.descriptor;
+    } finally {
+      URL.revokeObjectURL(url);
+    }
+  }
+
+  registerBtn.addEventListener('click', async () =&gt; {
+    if (busy) return;
+    busy = true; updateButtons();
+    const next = [];
+    try {
+      for (let i = 0; i &lt; 5; i++) {
+        const file = document.getElementById('photo' + i).files[0];
+        if (!file) continue;
+        const label = document.getElementById('name' + i).value.trim() || ('Reference ' + (i + 1));
+        statusEl.textContent = 'Processing ' + label + '…';
+        const descriptor = await descriptorFromImage(file);
+        next.push({label, descriptor});
+      }
+      if (!next.length) {
+        setResult('NO PHOTOS SELECTED', 'Choose at least one reference photo above.');
+      } else {
+        references = next;
+        statusEl.textContent = references.length + ' reference photo(s) registered in this browser session.';
+        statusEl.style.color = 'var(--green)';
+        setResult('REFERENCES READY', references.length + ' reference photo(s) registered. Start the camera and scan.', 'result-match');
+      }
+    } catch (err) {
+      references = [];
+      setResult('REGISTRATION FAILED', err.message, 'result-warn');
+      statusEl.textContent = 'Please correct the photo and try registering again.';
+      statusEl.style.color = 'var(--amber)';
+    } finally {
+      busy = false; updateButtons();
+    }
+  });
+
+  document.getElementById('clearBtn').addEventListener('click', () =&gt; {
+    references = [];
+    for (let i = 0; i &lt; 5; i++) {
+      document.getElementById('photo' + i).value = '';
+      document.getElementById('name' + i).value = '';
+    }
+    setResult('REFERENCES CLEARED', 'Add reference photos to use the demo.');
+    updateButtons();
+  });
+
+  startBtn.addEventListener('click', async () =&gt; {
+    try {
+      if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+        throw new Error('Camera access is unavailable. Open this website using its HTTPS link in Chrome.');
+      }
+      if (stream) stream.getTracks().forEach(t =&gt; t.stop());
+      stream = await navigator.mediaDevices.getUserMedia({
+        audio: false,
+        video: {facingMode: 'user', width: {ideal: 640}, height: {ideal: 480}}
+      });
+      video.srcObject = stream;
+      video.hidden = false;
+      placeholder.hidden = true;
+      await new Promise((resolve) =&gt; {
+        if (video.readyState &gt;= 1) return resolve();
+        video.onloadedmetadata = () =&gt; resolve();
+      });
+      await video.play();
+      setResult('CAMERA READY', 'Tap “Scan face” when a face is visible.');
+    } catch (err) {
+      stream = null;
+      video.hidden = true; placeholder.hidden = false;
+      setResult('CAMERA UNAVAILABLE', err.message, 'result-warn');
+    }
+    updateButtons();
+  });
+
+  scanBtn.addEventListener('click', async () =&gt; {
+    if (!stream || !references.length || busy) return;
+    busy = true; updateButtons();
+    try {
+      if (video.readyState &lt; 2 || !video.videoWidth) throw new Error('Camera is still starting. Wait a moment and try again.');
+      const canvas = document.createElement('canvas');
+      canvas.width = video.videoWidth; canvas.height = video.videoHeight;
+      const ctx = canvas.getContext('2d');
+      ctx.translate(canvas.width, 0); ctx.scale(-1, 1);
+      ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+      const detections = await faceapi.detectAllFaces(canvas, new faceapi.TinyFaceDetectorOptions({inputSize: 320, scoreThreshold: 0.35}))
+        .withFaceLandmarks().withFaceDescriptors();
+      if (!detections.length) {
+        setResult('NO FACE DETECTED', 'Move into the camera view, improve lighting and scan again.', 'result-warn');
+      } else if (detections.length &gt; 1) {
+        setResult('ONE PERSON AT A TIME', 'Please make sure only one face is visible for this demonstration.', 'result-warn');
+      } else {
+        let best = {distance: Infinity, label: ''};
+        for (const ref of references) {
+          const distance = faceapi.euclideanDistance(detections[0].descriptor, ref.descriptor);
+          if (distance &lt; best.distance) best = {distance, label: ref.label};
+        }
+        if (best.distance &lt; 0.48) {
+          setResult('STUDENT — POSSIBLE REGISTERED MATCH', 'Closest reference: ' + best.label + '. Confirm identity separately.', 'result-match');
+        } else if (best.distance &lt; 0.58) {
+          setResult('UNCERTAIN — CHECK MANUALLY', 'The result is not reliable enough to suggest a match. Confirm identity separately.', 'result-warn');
+        } else {
+          setResult('NOT VERIFIED — NO MATCH', 'No close match in the registered photos. This does not prove the person is a stranger.', 'result-none');
+        }
+      }
+    } catch (err) {
+      setResult('SCAN ERROR', err.message, 'result-warn');
+    } finally {
+      busy = false; updateButtons();
+    }
+  });
+
+  stopBtn.addEventListener('click', () =&gt; {
+    if (stream) stream.getTracks().forEach(t =&gt; t.stop());
+    stream = null;
+    video.srcObject = null;
+    video.hidden = true; placeholder.hidden = false;
+    setResult('CAMERA STOPPED', 'Start the camera when you are ready.');
+    updateButtons();
+  });
+
+  window.addEventListener('beforeunload', () =&gt; {
+    if (stream) stream.getTracks().forEach(t =&gt; t.stop());
+  });
+  loadModels();
+})();
+&lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+</code></pre>
+</section>
+<p class="status" id="status">Complete source code is displayed above.</p>
+</main>
+<script>
+const code = document.getElementById('source');
+document.getElementById('copyButton').addEventListener('click', async () => {
+  const status = document.getElementById('status');
+  try {
+    await navigator.clipboard.writeText(code.textContent);
+    status.textContent = 'Code copied successfully.';
+  } catch (error) {
+    const range = document.createRange();
+    range.selectNodeContents(code);
+    const selection = window.getSelection();
+    selection.removeAllRanges();
+    selection.addRange(range);
+    status.textContent = 'Code selected. Use Copy from your browser menu.';
+  }
+});
+</script>
+</body>
+</html>
